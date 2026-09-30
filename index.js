@@ -17,10 +17,30 @@ buttonTableLider.type = 'button';
 buttonTableLider.textContent = 'Leaderboard';
 const main = document.createElement('main');
 main.classList.add('main');
+const footer = document.createElement('footer');
+footer.classList.add('footer');
+const score = document.createElement('div');
+score.classList.add('score');
+score.textContent = 'Score: ';
+const numberScore = document.createElement('span');
+numberScore.classList.add('number_score');
+numberScore.textContent = '0';
+const pairs = document.createElement('div');
+pairs.classList.add('pairs');
+pairs.textContent = 'Pairs: ';
+const numberPairs = document.createElement('span');
+numberPairs.classList.add('number_pairs');
+numberPairs.textContent = '0';
+const descriptionPairs = document.createElement('span');
+descriptionPairs.classList.add('description_pairs');
+descriptionPairs.textContent = ' out of 8';
 
-container.append(header, main);
+container.append(header, main, footer);
 header.append(title, buttonsHeader);
 buttonsHeader.append(buttonNewGame, buttonTableLider);
+footer.append(score, pairs);
+score.append(numberScore);
+pairs.append(numberPairs, descriptionPairs);
 
 document.body.append(container);
 
