@@ -24,3 +24,31 @@ buttonsHeader.append(buttonNewGame, buttonTableLider);
 
 document.body.append(container);
 
+//create random cards
+const images = [
+  './assets/img/pumpkin.webp',
+  './assets/img/ghost.webp',
+  './assets/img/skull.webp',
+  './assets/img/spider.webp',
+  './assets/img/bat.webp',
+  './assets/img/witch-hat.webp',
+  './assets/img/black-cat.webp',
+  './assets/img/spider-web.webp',
+];
+const cards = [...images, ...images];
+
+for (let i = cards.length - 1; i > 0; i--) {
+  const j = Math.floor(Math.random() * (i + 1));
+
+  [cards[i], cards[j]] = [cards[j], cards[i]];
+}
+
+cards.forEach((picture) => {
+  const card = document.createElement('div');
+  card.classList.add('card');
+  const image = document.createElement('img');
+  image.src = picture;
+  
+  main.append(card);
+  card.append(image);
+});
