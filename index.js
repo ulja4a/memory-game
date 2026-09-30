@@ -24,13 +24,11 @@ score.classList.add('score');
 score.textContent = 'Score: ';
 const numberScore = document.createElement('span');
 numberScore.classList.add('number_score');
-numberScore.textContent = '0';
 const pairs = document.createElement('div');
 pairs.classList.add('pairs');
 pairs.textContent = 'Pairs: ';
 const numberPairs = document.createElement('span');
 numberPairs.classList.add('number_pairs');
-numberPairs.textContent = '0';
 const descriptionPairs = document.createElement('span');
 descriptionPairs.classList.add('description_pairs');
 descriptionPairs.textContent = ' out of 8';
@@ -63,6 +61,14 @@ for (let i = cards.length - 1; i > 0; i--) {
   [cards[i], cards[j]] = [cards[j], cards[i]];
 }
 
+let firstCard = null;
+let moves = 0;
+let openPairs = 0;
+let isChecking = false;
+
+numberScore.textContent = moves;
+numberPairs.textContent = openPairs;
+
 cards.forEach((picture) => {
   const card = document.createElement('div');
   card.classList.add('card');
@@ -72,8 +78,34 @@ cards.forEach((picture) => {
   main.append(card);
   card.append(image);
 
-  card.addEventListener('click', (event) => {
+  card.addEventListener('click', () => {
+    if (isChecking || firstCard === card || card.classList.contains('matched')) return;
     card.classList.add('open');
+      if (firstCard === null) {
+        firstCard = card;
+      } else {
+          isChecking = true
+          const firstImage = firstCard.querySelector('img');
+          const secondImage = card.querySelector('img');
+            moves ++;
+            numberScore.textContent = moves;
+          if (firstImage.src === secondImage.src) {
+            firstCard.classList.add('matched');
+            card.classList.add('matched');
+            firstCard = null;
+            openPairs ++;
+            numberPairs.textContent = openPairs;
+            isChecking = false;
+          } else {
+            setTimeout(() => {
+              firstCard.classList.remove('open');
+              card.classList.remove('open');
+              firstCard = null;
+              isChecking = false;
+            }, 2000);
+            
+          }
+        }
   })
 });
 
