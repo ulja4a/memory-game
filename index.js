@@ -51,4 +51,9 @@ cards.forEach((picture) => {
   
   main.append(card);
   card.append(image);
+
+  card.addEventListener('click', (event) => {
+    card.classList.add('open');
+  })
 });
+
