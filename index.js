@@ -50,6 +50,10 @@ function createModal(content) {
 
   modal.append(content);
 
+  modal.addEventListener('close', () => {
+    document.body.classList.remove('modal-open');
+  });
+
   return modal;
 }
 
@@ -62,7 +66,17 @@ function openModal(modal) {
 //function close modal
 function closeModal(modal) {
   modal.close();
-  document.body.classList.remove('modal-open');
+}
+
+//function close modal on backdrop
+function closeModalOnBackdrop(modal) {
+  modal.addEventListener('click', (event) => {
+    const rect = modal.getBoundingClientRect();
+
+    if (event.clientX < rect.left || event.clientX > rect.right || event.clientY > rect.bottom || event.clientY < rect.top) {
+      closeModal(modal);
+    }
+  });
 }
 
 
@@ -92,6 +106,7 @@ buttonsModal.append(buttonNewGameModal, buttonCloseModal);
 const victoryModal = createModal(victoryContent);
 
 document.body.append(victoryModal);
+closeModalOnBackdrop(victoryModal);
 
 buttonCloseModal.addEventListener('click', () => {
   closeModal(victoryModal);
