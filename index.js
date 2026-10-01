@@ -1,3 +1,4 @@
+
 const container = document.createElement('div');
 container.classList.add('container');
 const header = document.createElement('header');
@@ -42,6 +43,60 @@ pairs.append(numberPairs, descriptionPairs);
 
 document.body.append(container);
 
+//function create modal
+function createModal(content) {
+  const modal = document.createElement('dialog');
+  modal.classList.add('modal');
+
+  modal.append(content);
+
+  return modal;
+}
+
+//function open modal
+function openModal(modal) {
+  modal.showModal();
+  document.body.classList.add('modal-open');
+}
+
+//function close modal
+function closeModal(modal) {
+  modal.close();
+  document.body.classList.remove('modal-open');
+}
+
+
+//Modal victory
+const victoryContent = document.createElement('div');
+victoryContent.classList.add('victory-content');
+const victoryTitle = document.createElement('h2');
+victoryTitle.textContent = 'You matched them all! You win! 🎉';
+const victoryScore = document.createElement('div');
+victoryScore.classList.add('victory_score');
+victoryScore.textContent = 'Score: ';
+const victoryScoreMoves = document.createElement('span');
+victoryScoreMoves.classList.add('victory_score_moves');
+const buttonsModal = document.createElement('div');
+buttonsModal.classList.add('buttons_modal');
+const buttonNewGameModal = document.createElement('button');
+buttonNewGameModal.classList.add('button_newgame_modal');
+buttonNewGameModal.textContent = 'New Game';
+const buttonCloseModal = document.createElement('button');
+buttonCloseModal.classList.add('button_close_modal');
+buttonCloseModal.textContent = 'Close';
+
+victoryContent.append(victoryTitle, victoryScore, buttonsModal);
+victoryScore.append(victoryScoreMoves);
+buttonsModal.append(buttonNewGameModal, buttonCloseModal);
+
+const victoryModal = createModal(victoryContent);
+
+document.body.append(victoryModal);
+
+buttonCloseModal.addEventListener('click', () => {
+  closeModal(victoryModal);
+});
+
 //create random cards
 const images = [
   './assets/img/pumpkin.webp',
@@ -75,8 +130,8 @@ cards.forEach((picture) => {
   const image = document.createElement('img');
   image.src = picture;
   
-  main.append(card);
   card.append(image);
+  main.append(card);
 
   card.addEventListener('click', () => {
     if (isChecking || firstCard === card || card.classList.contains('matched')) return;
@@ -96,16 +151,24 @@ cards.forEach((picture) => {
             openPairs ++;
             numberPairs.textContent = openPairs;
             isChecking = false;
+            if (openPairs === images.length) {
+              victoryScoreMoves.textContent = moves;
+              openModal(victoryModal);
+            }
           } else {
             setTimeout(() => {
               firstCard.classList.remove('open');
               card.classList.remove('open');
               firstCard = null;
               isChecking = false;
-            }, 2000);
+            }, 1500);
             
           }
         }
   })
+
+  
 });
+
+
 

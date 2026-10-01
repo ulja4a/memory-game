@@ -80,6 +80,7 @@ body {
   background-color: var(--primary);
   aspect-ratio: 1 / 1;
   overflow: hidden;
+  transition: background-color 0.3s ease;
 }
 
 .card:hover {
@@ -111,4 +112,53 @@ body {
   color: var(--primary-border);
   font-size: 24px;
   margin-top: 10px;
+}
+
+/*Modal victory*/
+.modal {
+  margin: auto;
+  border: none;
+  border-radius: 20px;
+}
+
+.modal::backdrop {
+  background-color: rgba(0, 0, 0, 0.6);
+}
+
+body.modal-open {
+  overflow: hidden;
+}
+
+.victory-content {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 40px 20px;
+}
+
+.buttons_modal {
+  display: flex;
+  justify-content: space-between;
+  gap: 40px;
+  align-items: center;
+}
+
+.button_newgame_modal,
+.button_close_modal {
+  padding: 10px;
+  color: var(--bg);
+  background-color: var(--primary);
+  border-radius: 10px;
+  border: 2px solid var(--primary-border);
+  font-size: 20px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.button_newgame_modal:hover,
+.button_close_modal:hover {
+  background-color: var(--primary-border);
+  transition: background-color 0.3s ease;
 }
