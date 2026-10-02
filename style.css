@@ -7,19 +7,29 @@
 }
 
 * {
-  margin: 0 auto;
+  margin: 0;
   padding: 0;
   box-sizing: border-box;
-    }
+}
 
 body {
-  background: var(--bg);
-  font-family: var(--font);
-    }
+  min-height: 100vh;
+  background-image: url('assets/img/background.png');
+  background-size: 100% auto;
+  background-position: bottom center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 
 .container {
   max-width: 800px;
   width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
   background-color: var(--bg);
   border-radius: 30px;
   border: 1px solid var(--primary);
@@ -45,9 +55,10 @@ body {
 .buttons_header {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 30vw;
-  padding: 20px;
+  justify-content: center;
+  gap: 80px;
+  width: 100%;
+  padding: 10px 20px 20px;
 }
 
 .button_new-game,

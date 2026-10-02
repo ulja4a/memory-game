@@ -111,6 +111,10 @@ closeModalOnBackdrop(victoryModal);
 buttonCloseModal.addEventListener('click', () => {
   closeModal(victoryModal);
 });
+buttonNewGameModal.addEventListener('click', () => {
+  startNewGame();
+  closeModal(victoryModal);
+});
 
 //create modal leaderboard
 const leaderboardContent = document.createElement('div');
@@ -167,16 +171,19 @@ const images = [
 ];
 const cards = [...images, ...images];
 
-for (let i = cards.length - 1; i > 0; i--) {
-  const j = Math.floor(Math.random() * (i + 1));
-
-  [cards[i], cards[j]] = [cards[j], cards[i]];
+function shuffleCards() {
+  for (let i = cards.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [cards[i], cards[j]] = [cards[j], cards[i]];
+  }
 }
+shuffleCards();
 
 let firstCard = null;
 let moves = 0;
 let openPairs = 0;
 let isChecking = false;
+let mismatchTimer = null;
 
 numberScore.textContent = moves;
 numberPairs.textContent = openPairs;
@@ -215,11 +222,12 @@ cards.forEach((picture) => {
               openModal(victoryModal);
             }
           } else {
-            setTimeout(() => {
+            mismatchTimer = setTimeout(() => {
               firstCard.classList.remove('open');
               card.classList.remove('open');
               firstCard = null;
               isChecking = false;
+              mismatchTimer = null;
             }, 1500);
             
           }
@@ -292,4 +300,34 @@ function saveGameResult() {
 
   saveResults(bestResults);
 }
+
+function startNewGame() {
+  if (mismatchTimer !== null) {
+    clearTimeout(mismatchTimer);
+    mismatchTimer = null;
+  }
+
+  firstCard = null;
+  moves = 0;
+  openPairs = 0;
+  isChecking = false;
+
+  numberScore.textContent = moves;
+  numberPairs.textContent = openPairs;
+
+  shuffleCards();
+
+  const allCards = document.querySelectorAll('.card');
+
+  allCards.forEach((card, index) => {
+  card.classList.remove('open', 'matched');
+
+  const image = card.querySelector('img');
+  image.src = cards[index];
+});
+}
+
+buttonNewGame.addEventListener('click', () => {
+  startNewGame();
+});
 
