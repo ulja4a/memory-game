@@ -116,6 +116,7 @@ buttonCloseModal.addEventListener('click', () => {
 const leaderboardContent = document.createElement('div');
 leaderboardContent.classList.add('leaderboard-content');
 const leaderboardTitle = document.createElement('h2');
+leaderboardTitle.classList.add('leaderboard_title');
 leaderboardTitle.textContent = 'Leaderboard';
 const leaderboardTable = document.createElement('table');
 leaderboardTable.classList.add('leaderboard-table');
