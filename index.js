@@ -112,6 +112,47 @@ buttonCloseModal.addEventListener('click', () => {
   closeModal(victoryModal);
 });
 
+//create modal leaderboard
+const leaderboardContent = document.createElement('div');
+leaderboardContent.classList.add('leaderboard-content');
+const leaderboardTitle = document.createElement('h2');
+leaderboardTitle.textContent = 'Leaderboard';
+const leaderboardTable = document.createElement('table');
+leaderboardTable.classList.add('leaderboard-table');
+const leaderboardHead = document.createElement('thead');
+const leaderboardBody = document.createElement('tbody');
+const leaderboardHeadRow = document.createElement('tr');
+const leaderboardPosition = document.createElement('th');
+leaderboardPosition.textContent = 'Position';
+const leaderboardMoves = document.createElement('th');
+leaderboardMoves.textContent = 'Moves';
+const leaderboardDate = document.createElement('th');
+leaderboardDate.textContent = 'Date';
+const leaderboardClose = document.createElement('button');
+leaderboardClose.classList.add('button_close_leaderboard');
+leaderboardClose.textContent = 'Close';
+const leaderboardEmpty = document.createElement('p');
+leaderboardEmpty.textContent = 'No results yet';
+
+leaderboardHeadRow.append(leaderboardPosition, leaderboardMoves, leaderboardDate);
+leaderboardHead.append(leaderboardHeadRow);
+leaderboardTable.append(leaderboardHead, leaderboardBody);
+leaderboardContent.append(leaderboardTitle, leaderboardTable, leaderboardEmpty, leaderboardClose);
+
+
+const leaderboardModal = createModal(leaderboardContent);
+document.body.append(leaderboardModal);
+closeModalOnBackdrop(leaderboardModal);
+
+buttonTableLider.addEventListener('click', () => {
+  renderLeaderboard();
+  openModal(leaderboardModal);
+});
+
+leaderboardClose.addEventListener('click', () => {
+  closeModal(leaderboardModal);
+});
+
 //create random cards
 const images = [
   './assets/img/pumpkin.webp',
@@ -167,6 +208,8 @@ cards.forEach((picture) => {
             numberPairs.textContent = openPairs;
             isChecking = false;
             if (openPairs === images.length) {
+              saveGameResult();
+
               victoryScoreMoves.textContent = moves;
               openModal(victoryModal);
             }
@@ -181,9 +224,71 @@ cards.forEach((picture) => {
           }
         }
   })
-
-  
 });
 
+function getResults() {
+  return JSON.parse(localStorage.getItem('leaderboard')) || [];
+}
 
+function renderLeaderboard() {
+  const results = getResults();
+
+  if (results.length === 0) {
+    leaderboardEmpty.style.display = '';
+    leaderboardTable.style.display = 'none';
+  } else {
+    leaderboardEmpty.style.display = 'none';
+    leaderboardTable.style.display = '';
+
+    leaderboardBody.innerHTML = '';
+
+    results.forEach((result, index) => {
+      const row = document.createElement('tr');
+      const positionCell = document.createElement('td');
+      positionCell.textContent = index + 1;
+      const movesCell = document.createElement('td');
+      movesCell.textContent = result.moves;
+      const dateCell = document.createElement('td');
+      dateCell.textContent = result.date;
+
+      row.append(positionCell, movesCell, dateCell);
+      leaderboardBody.append(row);
+    });
+  }
+};
+
+function saveResults(results) {
+  localStorage.setItem('leaderboard', JSON.stringify(results));
+}
+
+function saveGameResult() {
+  const now = new Date();
+  const day = String(now.getDate()).padStart(2, '0');
+  const month = String(now.getMonth() + 1).padStart(2, '0');
+  const year = now.getFullYear();
+
+  const date = `${day}.${month}.${year}`;
+
+  const result = {
+    moves,
+    date,
+    timestamp: now.getTime()
+  };
+
+  const results = getResults();
+
+  results.push(result);
+
+  results.sort((a, b) => {
+    if (a.moves === b.moves) {
+      return a.timestamp - b.timestamp;
+    }
+
+    return a.moves - b.moves;
+  });
+
+  const bestResults = results.slice(0, 10);
+
+  saveResults(bestResults);
+}
 
