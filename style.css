@@ -71,6 +71,22 @@ body {
   transition: background-color 0.3s ease;
 }
 
+@media (max-width: 600px) {
+  .buttons_header {
+    gap:50px
+  }
+
+  .button_new-game,
+  .button_table-lider {
+    padding: 5px;
+    font-size: 20px;
+  }
+
+  .title_game {
+    font-size: 20px;
+  }
+}
+
 .button_new-game:hover,
 .button_table-lider:hover {
   background-color: var(--primary-border);
